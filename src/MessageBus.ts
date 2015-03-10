@@ -38,14 +38,14 @@ module MessageBus {
       this.channels = {};
     }
 
-    subscribe(name: string, callback: ICallback): void {
+    on(name: string, callback: ICallback): void {
       if (!this.channelExists(name)) {
         this.channels[name] = [];
       }
       this.channels[name].push(callback);
     }
 
-    unsubscribe(name: string, callback: ICallback): void {
+    off(name: string, callback: ICallback): void {
       if (this.channelExists(name)) {
         var channel = this.channels[name],
             index   = channel.indexOf(callback);
@@ -55,7 +55,7 @@ module MessageBus {
       }
     }
     
-    publish(name: string, data: any): void {
+    emit(name: string, data: any): void {
       this.endpoint.postMessage({ name: name, data: data });
     }
     

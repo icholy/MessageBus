@@ -17,35 +17,35 @@ describe('MessageBus', function () {
   };
 
   it('should send a string message', function (done) {
-    bus.subscribe('success', done);
-    bus.subscribe('error', throwIt);
-    bus.publish('string-message', 'a string');
+    bus.on('success', done);
+    bus.on('error', throwIt);
+    bus.emit('string-message', 'a string');
   });
 
   it('should send a number message', function (done) {
-    bus.subscribe('success', done);
-    bus.subscribe('error', throwIt);
-    bus.publish('number-message', 123);
+    bus.on('success', done);
+    bus.on('error', throwIt);
+    bus.emit('number-message', 123);
   });
 
   it('should send an object message', function (done) {
-    bus.subscribe('success', done);
-    bus.subscribe('error', throwIt);
-    bus.publish('object-message', {});
+    bus.on('success', done);
+    bus.on('error', throwIt);
+    bus.emit('object-message', {});
   });
 
   it('should recieve errors on "error"', function (done) {
-    bus.subscribe('error', function (err) {
+    bus.on('error', function (err) {
       done();
     });
-    bus.publish('throw-error');
+    bus.emit('throw-error');
   });
 
   it('should recieve multiple message', function (done) {
     var messageCount = 0,
         i;
 
-    bus.subscribe('pong', function (data) {
+    bus.on('pong', function (data) {
       messageCount++;
       if (messageCount === 10) {
         done();
@@ -53,7 +53,7 @@ describe('MessageBus', function () {
     });
 
     for (i = 0; i < 100; i++) {
-      bus.publish('ping', null);
+      bus.emit('ping', null);
     }
   });
 
@@ -67,11 +67,11 @@ describe('MessageBus', function () {
       }
     };
 
-    bus.subscribe('pong', listener);
-    bus.subscribe('pong', listener);
-    bus.subscribe('pong', listener);
+    bus.on('pong', listener);
+    bus.on('pong', listener);
+    bus.on('pong', listener);
 
-    bus.publish('ping', null);
+    bus.emit('ping', null);
 
   });
 

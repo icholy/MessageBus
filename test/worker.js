@@ -4,14 +4,14 @@ importScripts('../build/MessageBus.js');
 var bus = MessageBus.create(self);
 
 var success = function () {
-  bus.publish('success', null);
+  bus.emit('success', null);
 };
 
 var error = function (err) {
-  bus.publish('error', err);
+  bus.emit('error', err);
 };
 
-bus.subscribe('string-message', function (data) {
+bus.on('string-message', function (data) {
   if (typeof data === 'string') {
     success();
   } else {
@@ -19,7 +19,7 @@ bus.subscribe('string-message', function (data) {
   }
 });
 
-bus.subscribe('number-message', function (data) {
+bus.on('number-message', function (data) {
   if (typeof data === 'number') {
     success();
   } else {
@@ -27,7 +27,7 @@ bus.subscribe('number-message', function (data) {
   }
 });
 
-bus.subscribe('object-message', function (data) {
+bus.on('object-message', function (data) {
   if (typeof data === 'object') {
     success();
   } else {
@@ -35,11 +35,11 @@ bus.subscribe('object-message', function (data) {
   }
 });
 
-bus.subscribe('throw-error', function (data) {
+bus.on('throw-error', function (data) {
   throw new Error('an error');
 });
 
-bus.subscribe('ping', function (data) {
-  bus.publish('pong', null);
+bus.on('ping', function (data) {
+  bus.emit('pong', null);
 });
 
