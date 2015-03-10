@@ -1,4 +1,4 @@
-# MessageBus
+# MessageBus [![Build Status](https://travis-ci.org/icholy/MessageBus.svg)](https://travis-ci.org/icholy/MessageBus) 
 
 > PubSub library for WebWorkers
 
