@@ -31,10 +31,17 @@ gulp.task('watch', function () {
   gulp.watch('src/**/*.ts', ['build']);
 });
 
-gulp.task('test', ['watch'], function (done) {
+gulp.task('test_watch', ['watch'], function (done) {
   karma.start({
     configFile: __dirname + '/karma.conf.js',
     singleRun: false,
+  }, done);
+});
+
+gulp.task('test', ['build'], function (done) {
+  karma.start({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: true,
   }, done);
 });
 
