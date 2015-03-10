@@ -11,6 +11,14 @@ var error = function (err) {
   bus.emit('error', err);
 };
 
+bus.on('null-message', function (data) {
+  if (data === null) {
+    success();
+  } else {
+    error();
+  }
+});
+
 bus.on('string-message', function (data) {
   if (typeof data === 'string') {
     success();

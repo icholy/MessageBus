@@ -16,6 +16,12 @@ describe('MessageBus', function () {
     throw err;
   };
 
+  it('should send a null message', function (done) {
+    bus.on('success', done);
+    bus.on('error', throwIt);
+    bus.emit('null-message', null);
+  });
+
   it('should send a string message', function (done) {
     bus.on('success', done);
     bus.on('error', throwIt);
