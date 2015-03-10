@@ -1,24 +1,30 @@
 
 var gulp          = require('gulp'),
     karma         = require('karma').server,
-    child_process = require("child_process"),
+    rimraf        = require('rimraf'),
+    typedoc       = require('gulp-typedoc'),
     tslint        = require('gulp-tslint'),
     typescript    = require('gulp-typescript');
 
+var baseTypeScriptTask = function () {
+  return gulp.src('src/*.ts');
+};
+
 gulp.task('build', function () {
-  gulp.src('src/*.ts')
+  return baseTypeScriptTask()
       .pipe(typescript())
       .pipe(gulp.dest('build'));
 });
 
 gulp.task('lint', function () {
-  gulp.src('src/*.ts')
+  return baseTypeScriptTask()
       .pipe(tslint())
       .pipe(tslint.report('verbose'))
 });
 
 gulp.task('docs', function (done) {
-  child_process.exec('typedoc --out docs/ src/', done);
+  return baseTypeScriptTask()
+      .pipe(typedoc({ out: "docs/" }));
 });
 
 gulp.task('watch', function () {
@@ -30,6 +36,12 @@ gulp.task('test', ['watch'], function (done) {
     configFile: __dirname + '/karma.conf.js',
     singleRun: false,
   }, done);
+});
+
+gulp.task('clean', function () {
+  var noop = function () {};
+  rimraf('docs/', noop);
+  rimraf('build/', noop);
 });
 
 gulp.task('dist', ['lint', 'docs', 'build']);
