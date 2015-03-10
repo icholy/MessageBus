@@ -1,31 +1,31 @@
 module MessageBus {
-  
+
   export interface Endpoint {
     postMessage(message: any): void;
     addEventListener(type: string, listener: (ev: any) => any): any;
     removeEventListener(type: string, listener: (ev: any) => any): any;
   }
-  
+
   export interface Callback {
     (data: any): any;
   }
-  
+
   class MessageBus {
-    
-    private channels: { [name:string]: Array<Callback> } = {};
+
+    private channels: { [name: string]: Array<Callback> } = {};
     private unlisten: () => void = null
-    
+
     constructor(private endpoint: Endpoint) {
 
       var onMessage = (e) => this.onMessage(e),
           onError   = (e) => this.onError(e);
 
-      endpoint.addEventListener('message', onMessage);
-      endpoint.addEventListener('error', onError);
+      endpoint.addEventListener("message", onMessage);
+      endpoint.addEventListener("error", onError);
 
       this.unlisten = () => {
-        endpoint.removeEventListener('message', onMessage);
-        endpoint.removeEventListener('error', onError);
+        endpoint.removeEventListener("message", onMessage);
+        endpoint.removeEventListener("error", onError);
       };
 
     }
@@ -54,15 +54,15 @@ module MessageBus {
         }
       }
     }
-    
+
     emit(name: string, data: any): void {
       this.endpoint.postMessage({ name: name, data: data });
     }
-    
+
     private channelExists(name: string): boolean {
       return this.channels.hasOwnProperty(name);
     }
-    
+
     private onMessage(ev: MessageEvent): void {
       var msg = ev.data;
       if (this.channelExists(msg.name)) {
@@ -73,10 +73,10 @@ module MessageBus {
         this.onUnhandled(ev);
       }
     }
-    
+
     private onError(ev: ErrorEvent): void {
-      if (this.channelExists('error')) {
-        this.channels['error'].forEach((callback) => {
+      if (this.channelExists("error")) {
+        this.channels["error"].forEach((callback) => {
           callback(ev);
         });
       } else {
@@ -87,9 +87,9 @@ module MessageBus {
     private onUnhandled(ev: any): void {
       console.log("Unhandled Event:", ev);
     }
-  
+
   }
-  
+
   export function create(endpoint: Endpoint): MessageBus {
     return new MessageBus(endpoint);
   }
