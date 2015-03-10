@@ -1,21 +1,21 @@
 module MessageBus {
   
-  export interface IEndpoint {
+  export interface Endpoint {
     postMessage(message: any): void;
     addEventListener(type: string, listener: (ev: any) => any): any;
     removeEventListener(type: string, listener: (ev: any) => any): any;
   }
   
-  export interface ICallback {
+  export interface Callback {
     (data: any): any;
   }
   
   class MessageBus {
     
-    private channels: { [name:string]: Array<ICallback> } = {};
+    private channels: { [name:string]: Array<Callback> } = {};
     private unlisten: () => void = null
     
-    constructor(private endpoint: IEndpoint) {
+    constructor(private endpoint: Endpoint) {
 
       var onMessage = (e) => this.onMessage(e),
           onError   = (e) => this.onError(e);
@@ -38,14 +38,14 @@ module MessageBus {
       this.channels = {};
     }
 
-    on(name: string, callback: ICallback): void {
+    on(name: string, callback: Callback): void {
       if (!this.channelExists(name)) {
         this.channels[name] = [];
       }
       this.channels[name].push(callback);
     }
 
-    off(name: string, callback: ICallback): void {
+    off(name: string, callback: Callback): void {
       if (this.channelExists(name)) {
         var channel = this.channels[name],
             index   = channel.indexOf(callback);
@@ -90,7 +90,7 @@ module MessageBus {
   
   }
   
-  export function create(endpoint: IEndpoint): MessageBus {
+  export function create(endpoint: Endpoint): MessageBus {
     return new MessageBus(endpoint);
   }
 }
