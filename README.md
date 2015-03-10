@@ -2,7 +2,8 @@
 
 > PubSub library for WebWorkers
 
-main.js
+**main.js**
+
 ``` js
 var worker = new Worker('worker.js'),
     bus    = MessageBus.create(worker);
@@ -14,7 +15,8 @@ bus.on('pong', function (data) {
 bus.emit('ping', null);
 ```
 
-worker.js
+**worker.js**
+
 ``` js
 importScripts('../build/MessageBus.js');
 
