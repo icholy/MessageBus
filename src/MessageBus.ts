@@ -13,10 +13,29 @@ module MessageBus {
   class MessageBus {
     
     private channels: { [name:string]: Array<ICallback> } = {};
+    private unlisten: () => void = null
     
     constructor(private endpoint: IEndpoint) {
-      endpoint.addEventListener('message', (e) => this.onMessage(e));
-      endpoint.addEventListener('error', (e) => this.onError(e));
+
+      var onMessage = (e) => this.onMessage(e),
+          onError   = (e) => this.onError(e);
+
+      endpoint.addEventListener('message', onMessage);
+      endpoint.addEventListener('error', onError);
+
+      this.unlisten = () => {
+        endpoint.removeEventListener('message', onMessage);
+        endpoint.removeEventListener('error', onError);
+      };
+
+    }
+
+    close(): void {
+      if (this.unlisten !== null) {
+        this.unlisten();
+      }
+      this.unlisten = null;
+      this.channels = {};
     }
 
     subscribe(name: string, callback: ICallback): void {

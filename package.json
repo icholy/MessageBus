@@ -10,8 +10,11 @@
   "license": "MIT",
   "devDependencies": {
     "gulp": "^3.8.11",
-    "gulp-concat": "^2.5.2",
+    "gulp-karma": "0.0.4",
     "gulp-mocha": "^2.0.0",
-    "gulp-typescript": "^2.4.2"
+    "gulp-typescript": "^2.4.2",
+    "karma": "^0.12.31",
+    "karma-mocha": "^0.1.10",
+    "mocha": "^2.2.1"
   }
 }
