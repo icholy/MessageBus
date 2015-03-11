@@ -2,7 +2,7 @@
   "name": "MessageBus",
   "version": "0.0.1",
   "description": "Message Bus for WebWorkers",
-  "main": "index.js",
+  "main": "build/MessageBus.js",
   "scripts": {
     "test": "./node_modules/.bin/gulp test"
   },
