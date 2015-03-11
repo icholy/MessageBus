@@ -2,6 +2,7 @@
 var gulp          = require('gulp'),
     karma         = require('karma').server,
     rimraf        = require('rimraf'),
+    uglify        = require('gulp-uglify'),
     typedoc       = require('gulp-typedoc'),
     tslint        = require('gulp-tslint'),
     typescript    = require('gulp-typescript');
@@ -13,6 +14,7 @@ var baseTypeScriptTask = function () {
 gulp.task('build', function () {
   return baseTypeScriptTask()
       .pipe(typescript())
+      .pipe(uglify())
       .pipe(gulp.dest('build'));
 });
 
