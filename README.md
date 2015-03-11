@@ -8,8 +8,8 @@
 var worker = new Worker('worker.js'),
     bus    = MessageBus.create(worker);
 
-bus.on('pong', function (data) {
-  console.log('got a pong');
+bus.on('pong', function (payload) {
+  console.log(payload.foo);
 });
 
 bus.emit('ping', null);
@@ -22,7 +22,7 @@ importScripts('../build/MessageBus.js');
 
 var bus = MessageBus.create(self);
 
-bus.on('ping', function (data) {
-  bus.emit('pong', null);
+bus.on('ping', function () {
+  bus.emit('pong', { foo: 'Hello World' });
 });
 ```
