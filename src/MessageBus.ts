@@ -12,23 +12,26 @@ module MessageBus {
 
   export class MessageBus {
 
-    private channels: { [name: string]: Array<Listener> } = {};
-    private unlisten: () => void = null
+    private _channels: { [name: string]: Array<Listener> } = {};
+    private _unlisten: () => void = null
+    private _endpoint: Endpoint;
 
     /**
      * Wrap an `Endpoint` and provide a pubsub interface.
      *
      * @param endpoint WebWorker endpoint
      */
-    constructor(private endpoint: Endpoint) {
+    constructor(endpoint: Endpoint) {
 
-      var onMessage = (e) => this.onEvent(e.data.name, e.data.payload),
-          onError   = (e) => this.onEvent("error", e);
+      this._endpoint = endpoint;
+
+      var onMessage = (e) => this._onEvent(e.data.name, e.data.payload),
+          onError   = (e) => this._onEvent("error", e);
 
       endpoint.addEventListener("message", onMessage);
       endpoint.addEventListener("error", onError);
 
-      this.unlisten = () => {
+      this._unlisten = () => {
         endpoint.removeEventListener("message", onMessage);
         endpoint.removeEventListener("error", onError);
       };
@@ -40,11 +43,11 @@ module MessageBus {
      * Delete all listeners from `MessageBus`
      */
     close(): void {
-      if (this.unlisten !== null) {
-        this.unlisten();
+      if (this._unlisten !== null) {
+        this._unlisten();
       }
-      this.unlisten = null;
-      this.channels = {};
+      this._unlisten = null;
+      this._channels = {};
     }
 
     /**
@@ -54,10 +57,10 @@ module MessageBus {
      * @param listener Callback function
      */
     on(name: string, listener: Listener): void {
-      if (!this.channelExists(name)) {
-        this.channels[name] = [];
+      if (!this._channelExists(name)) {
+        this._channels[name] = [];
       }
-      this.channels[name].push(listener);
+      this._channels[name].push(listener);
     }
 
     /**
@@ -67,8 +70,8 @@ module MessageBus {
      * @param listener Callback function
      */
     off(name: string, listener: Listener): void {
-      if (this.channelExists(name)) {
-        var channel = this.channels[name],
+      if (this._channelExists(name)) {
+        var channel = this._channels[name],
             index   = channel.indexOf(listener);
         if (index !== -1) {
           channel.splice(index, 1);
@@ -83,16 +86,16 @@ module MessageBus {
      * @param payload Message data
      */
     emit(name: string, payload?: any): void {
-      this.endpoint.postMessage({ name: name, payload: payload });
+      this._endpoint.postMessage({ name: name, payload: payload });
     }
 
-    private channelExists(name: string): boolean {
-      return this.channels.hasOwnProperty(name);
+    private _channelExists(name: string): boolean {
+      return this._channels.hasOwnProperty(name);
     }
 
-    private onEvent(name: string, payload: any): void {
-      if (this.channelExists(name)) {
-        this.channels[name].forEach((listener) => {
+    private _onEvent(name: string, payload: any): void {
+      if (this._channelExists(name)) {
+        this._channels[name].forEach((listener) => {
           listener(payload);
         });
       }

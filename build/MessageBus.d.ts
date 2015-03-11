@@ -8,9 +8,9 @@ declare module MessageBus {
         (payload?: any): any;
     }
     class MessageBus {
-        private endpoint;
-        private channels;
-        private unlisten;
+        private _channels;
+        private _unlisten;
+        private _endpoint;
         /**
          * Wrap an `Endpoint` and provide a pubsub interface.
          *
@@ -43,8 +43,8 @@ declare module MessageBus {
          * @param payload Message data
          */
         emit(name: string, payload?: any): void;
-        private channelExists(name);
-        private onEvent(name, payload);
+        private _channelExists(name);
+        private _onEvent(name, payload);
     }
     /**
      * Factory function for creating a `MessageBus`
