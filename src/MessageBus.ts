@@ -7,7 +7,7 @@ module MessageBus {
   }
 
   export interface Callback {
-    (payload: any): any;
+    (payload?: any): any;
   }
 
   class MessageBus {
@@ -55,7 +55,7 @@ module MessageBus {
       }
     }
 
-    emit(name: string, payload: any): void {
+    emit(name: string, payload?: any): void {
       this.endpoint.postMessage({ name: name, payload: payload });
       setTimeout(() => this.onEvent(name, payload), 0);
     }

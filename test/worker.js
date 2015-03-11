@@ -51,11 +51,11 @@ bus.on('object-message', function (payload) {
   }
 });
 
-bus.on('throw-error', function (payload) {
+bus.on('throw-error', function () {
   throw new Error('an error');
 });
 
-bus.on('ping', function (payload) {
+bus.on('ping', function () {
   bus.emit('pong', null);
 });
 

@@ -19,7 +19,7 @@ describe('MessageBus', function () {
   it('should send an undefined message', function (done) {
     bus.on('success', done);
     bus.on('error', throwIt);
-    bus.emit('undefined-message', undefined);
+    bus.emit('undefined-message');
   });
 
   it('should send a null message', function (done) {
@@ -57,7 +57,7 @@ describe('MessageBus', function () {
     var messageCount = 0,
         i;
 
-    bus.on('pong', function (payload) {
+    bus.on('pong', function () {
       messageCount++;
       if (messageCount === 10) {
         done();
@@ -65,14 +65,14 @@ describe('MessageBus', function () {
     });
 
     for (i = 0; i < 100; i++) {
-      bus.emit('ping', null);
+      bus.emit('ping');
     }
   });
 
   it('should work with multiple listeners', function (done) {
     var messageCount = 0;
 
-    var listener = function (payload) {
+    var listener = function () {
       messageCount++;
       if (messageCount === 3) {
         done();
@@ -83,15 +83,15 @@ describe('MessageBus', function () {
     bus.on('pong', listener);
     bus.on('pong', listener);
 
-    bus.emit('ping', null);
+    bus.emit('ping');
 
   });
 
   it('should recieve its own messages', function (done) {
-    bus.on('test', function (payload) {
+    bus.on('test', function () {
       done();
     });
-    bus.emit('test', null);
+    bus.emit('test');
   });
 
 });
