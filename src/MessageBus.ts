@@ -101,6 +101,11 @@ module MessageBus {
 
   }
 
+  /**
+   * Factory function for creating a `MessageBus`
+   *
+   * @param endpoint WebWorker endpoint
+   */
   export function create(endpoint: Endpoint): MessageBus {
     return new MessageBus(endpoint);
   }
