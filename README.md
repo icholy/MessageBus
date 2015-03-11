@@ -21,7 +21,7 @@ bus.on('pong', function (payload) {
   console.log(payload.foo);
 });
 
-bus.emit('ping', null);
+bus.emit('ping');
 ```
 
 **worker.js**
@@ -50,7 +50,7 @@ bus.on('pong', function (payload) {
   console.log(payload.foo);
 });
 
-bus.emit('ping', null);
+bus.emit('ping');
 ```
 
 **worker.js**
