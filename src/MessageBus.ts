@@ -10,7 +10,7 @@ module MessageBus {
     (payload?: any): any;
   }
 
-  class MessageBus {
+  export class MessageBus {
 
     private channels: { [name: string]: Array<Listener> } = {};
     private unlisten: () => void = null
