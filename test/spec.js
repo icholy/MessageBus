@@ -96,13 +96,6 @@ describe('MessageBus', function () {
 
     });
 
-    it('should recieve its own messages', function (done) {
-      bus.on('test', function () {
-        done();
-      });
-      bus.emit('test');
-    });
-
   });
 
   describe('with SharedWorker', function () {
@@ -195,13 +188,6 @@ describe('MessageBus', function () {
 
       bus.emit('ping');
 
-    });
-
-    it('should recieve its own messages', function (done) {
-      bus.on('test', function () {
-        done();
-      });
-      bus.emit('test');
     });
 
   });
