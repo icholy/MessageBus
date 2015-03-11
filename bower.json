@@ -5,6 +5,9 @@
   "authors": [
     "Ilia Choly <ilia.choly@gmail.com>"
   ],
+  "typescript": {
+    "definition": "build/MessageBus.d.ts"
+  },
   "description": "Message Bus for WebWorkers",
   "main": "build/MessageBus.js",
   "license": "MIT",
