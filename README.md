@@ -2,6 +2,15 @@
 
 > PubSub library for WebWorkers
 
+### Install
+
+``` sh
+$ npm install
+$ gulp dist
+```
+
+### Usage Example
+
 **main.js**
 
 ``` js
