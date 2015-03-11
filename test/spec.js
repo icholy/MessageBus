@@ -64,7 +64,7 @@ describe('MessageBus', function () {
       }
     });
 
-    for (i = 0; i < 100; i++) {
+    for (i = 0; i < 10; i++) {
       bus.emit('ping');
     }
   });
