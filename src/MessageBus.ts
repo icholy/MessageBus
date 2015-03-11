@@ -17,8 +17,8 @@ module MessageBus {
 
     constructor(private endpoint: Endpoint) {
 
-      var onMessage = (e) => this.onMessage(e),
-          onError   = (e) => this.onError(e);
+      var onMessage = (e) => this.onEvent(e.data.name, e.data.data),
+          onError   = (e) => this.onEvent("error", e);
 
       endpoint.addEventListener("message", onMessage);
       endpoint.addEventListener("error", onError);
@@ -63,29 +63,12 @@ module MessageBus {
       return this.channels.hasOwnProperty(name);
     }
 
-    private onMessage(ev: MessageEvent): void {
-      var msg = ev.data;
-      if (this.channelExists(msg.name)) {
-        this.channels[msg.name].forEach((callback) => {
-          callback(msg.data);
+    private onEvent(name: string, data: any): void {
+      if (this.channelExists(name)) {
+        this.channels[name].forEach((callback) => {
+          callback(data);
         });
-      } else {
-        this.onUnhandled(ev);
       }
-    }
-
-    private onError(ev: ErrorEvent): void {
-      if (this.channelExists("error")) {
-        this.channels["error"].forEach((callback) => {
-          callback(ev);
-        });
-      } else {
-        this.onUnhandled(ev);
-      }
-    }
-
-    private onUnhandled(ev: any): void {
-      console.log("Unhandled Event:", ev);
     }
 
   }
