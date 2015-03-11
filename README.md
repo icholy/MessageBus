@@ -71,6 +71,5 @@ onconnect = function (event) {
   bus.on('ping', function () {
     bus.emit('pong', { foo: 'Hello World' });
   });
-}
-
+};
 ```
