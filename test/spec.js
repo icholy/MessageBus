@@ -87,4 +87,11 @@ describe('MessageBus', function () {
 
   });
 
+  it('should recieve its own messages', function (done) {
+    bus.on('test', function (data) {
+      done();
+    });
+    bus.emit('test', null);
+  });
+
 });

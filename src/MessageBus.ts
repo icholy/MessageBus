@@ -57,6 +57,7 @@ module MessageBus {
 
     emit(name: string, data: any): void {
       this.endpoint.postMessage({ name: name, data: data });
+      setTimeout(() => this.onEvent(name, data), 0);
     }
 
     private channelExists(name: string): boolean {
