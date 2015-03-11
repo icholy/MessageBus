@@ -11,51 +11,51 @@ var error = function (err) {
   bus.emit('error', err);
 };
 
-bus.on('undefined-message', function (data) {
-  if (typeof data === 'undefined') {
+bus.on('undefined-message', function (payload) {
+  if (typeof payload === 'undefined') {
     success();
   } else {
     error();
   }
 });
 
-bus.on('null-message', function (data) {
-  if (data === null) {
+bus.on('null-message', function (payload) {
+  if (payload === null) {
     success();
   } else {
     error();
   }
 });
 
-bus.on('string-message', function (data) {
-  if (typeof data === 'string') {
+bus.on('string-message', function (payload) {
+  if (typeof payload === 'string') {
     success();
   } else {
     error();
   }
 });
 
-bus.on('number-message', function (data) {
-  if (typeof data === 'number') {
+bus.on('number-message', function (payload) {
+  if (typeof payload === 'number') {
     success();
   } else {
     error();
   }
 });
 
-bus.on('object-message', function (data) {
-  if (typeof data === 'object') {
+bus.on('object-message', function (payload) {
+  if (typeof payload === 'object') {
     success();
   } else {
     error();
   }
 });
 
-bus.on('throw-error', function (data) {
+bus.on('throw-error', function (payload) {
   throw new Error('an error');
 });
 
-bus.on('ping', function (data) {
+bus.on('ping', function (payload) {
   bus.emit('pong', null);
 });
 

@@ -57,7 +57,7 @@ describe('MessageBus', function () {
     var messageCount = 0,
         i;
 
-    bus.on('pong', function (data) {
+    bus.on('pong', function (payload) {
       messageCount++;
       if (messageCount === 10) {
         done();
@@ -72,7 +72,7 @@ describe('MessageBus', function () {
   it('should work with multiple listeners', function (done) {
     var messageCount = 0;
 
-    var listener = function (data) {
+    var listener = function (payload) {
       messageCount++;
       if (messageCount === 3) {
         done();
@@ -88,7 +88,7 @@ describe('MessageBus', function () {
   });
 
   it('should recieve its own messages', function (done) {
-    bus.on('test', function (data) {
+    bus.on('test', function (payload) {
       done();
     });
     bus.emit('test', null);

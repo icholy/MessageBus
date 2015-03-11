@@ -7,7 +7,7 @@ module MessageBus {
   }
 
   export interface Callback {
-    (data: any): any;
+    (payload: any): any;
   }
 
   class MessageBus {
@@ -17,7 +17,7 @@ module MessageBus {
 
     constructor(private endpoint: Endpoint) {
 
-      var onMessage = (e) => this.onEvent(e.data.name, e.data.data),
+      var onMessage = (e) => this.onEvent(e.data.name, e.data.payload),
           onError   = (e) => this.onEvent("error", e);
 
       endpoint.addEventListener("message", onMessage);
@@ -55,19 +55,19 @@ module MessageBus {
       }
     }
 
-    emit(name: string, data: any): void {
-      this.endpoint.postMessage({ name: name, data: data });
-      setTimeout(() => this.onEvent(name, data), 0);
+    emit(name: string, payload: any): void {
+      this.endpoint.postMessage({ name: name, payload: payload });
+      setTimeout(() => this.onEvent(name, payload), 0);
     }
 
     private channelExists(name: string): boolean {
       return this.channels.hasOwnProperty(name);
     }
 
-    private onEvent(name: string, data: any): void {
+    private onEvent(name: string, payload: any): void {
       if (this.channelExists(name)) {
         this.channels[name].forEach((callback) => {
-          callback(data);
+          callback(payload);
         });
       }
     }
