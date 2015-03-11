@@ -149,7 +149,7 @@ describe('MessageBus', function () {
       bus.emit('object-message', {});
     });
 
-    it.only('should recieve errors on "error"', function (done) {
+    it('should recieve errors on "error"', function (done) {
       bus.on('error', function (err) {
         done();
       });
