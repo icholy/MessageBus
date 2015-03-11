@@ -6,15 +6,20 @@ module MessageBus {
     removeEventListener(type: string, listener: (ev: any) => any): any;
   }
 
-  export interface Callback {
+  export interface Listener {
     (payload?: any): any;
   }
 
   class MessageBus {
 
-    private channels: { [name: string]: Array<Callback> } = {};
+    private channels: { [name: string]: Array<Listener> } = {};
     private unlisten: () => void = null
 
+    /**
+     * Wrap an `Endpoint` and provide a pubsub interface.
+     *
+     * @param endpoint WebWorker endpoint
+     */
     constructor(private endpoint: Endpoint) {
 
       var onMessage = (e) => this.onEvent(e.data.name, e.data.payload),
@@ -30,6 +35,10 @@ module MessageBus {
 
     }
 
+    /**
+     * Remove event listeners from supplied `Endpoint`
+     * Delete all listeners from `MessageBus`
+     */
     close(): void {
       if (this.unlisten !== null) {
         this.unlisten();
@@ -38,23 +47,41 @@ module MessageBus {
       this.channels = {};
     }
 
-    on(name: string, callback: Callback): void {
+    /**
+     * Listener on channel
+     * 
+     * @param name Channel to listen on
+     * @param listener Callback function
+     */
+    on(name: string, listener: Listener): void {
       if (!this.channelExists(name)) {
         this.channels[name] = [];
       }
-      this.channels[name].push(callback);
+      this.channels[name].push(listener);
     }
 
-    off(name: string, callback: Callback): void {
+    /**
+     * Unlisten from channel
+     * 
+     * @param name Channel to unlisten
+     * @param listener Callback function
+     */
+    off(name: string, listener: Listener): void {
       if (this.channelExists(name)) {
         var channel = this.channels[name],
-            index   = channel.indexOf(callback);
+            index   = channel.indexOf(listener);
         if (index !== -1) {
           channel.splice(index, 1);
         }
       }
     }
 
+    /**
+     * Emit a message on a channel
+     * 
+     * @param name Channel name
+     * @param payload Message data
+     */
     emit(name: string, payload?: any): void {
       this.endpoint.postMessage({ name: name, payload: payload });
       setTimeout(() => this.onEvent(name, payload), 0);
@@ -66,8 +93,8 @@ module MessageBus {
 
     private onEvent(name: string, payload: any): void {
       if (this.channelExists(name)) {
-        this.channels[name].forEach((callback) => {
-          callback(payload);
+        this.channels[name].forEach((listener) => {
+          listener(payload);
         });
       }
     }
