@@ -27,7 +27,7 @@ bus.emit('ping', null);
 **worker.js**
 
 ``` js
-importScripts('../build/MessageBus.js');
+importScripts('MessageBus.js');
 
 var bus = MessageBus.create(self);
 
@@ -56,7 +56,7 @@ bus.emit('ping', null);
 **worker.js**
 
 ``` js
-importScripts('../build/MessageBus.js');
+importScripts('MessageBus.js');
 
 onconnect = function (event) {
   var port = events.port[0],
