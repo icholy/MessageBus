@@ -18,7 +18,8 @@ module.exports = function(config) {
       'build/*.js',
       'test/spec.js',
 
-      { pattern: 'test/worker.js', included: false }
+      { pattern: 'test/worker.js', included: false },
+      { pattern: 'test/shared-worker.js', included: false }
     ],
 
 

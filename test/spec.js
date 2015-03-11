@@ -1,97 +1,209 @@
 
 describe('MessageBus', function () {
 
-  var worker = new Worker('base/test/worker.js'),
-      bus;
+  describe('with Worker', function () {
 
-  beforeEach(function () {
-    bus = MessageBus.create(worker);
-  });
+    var worker, bus;
 
-  afterEach(function () {
-    bus.close();
-  });
-
-  var throwIt = function (err) {
-    throw err;
-  };
-
-  it('should send an undefined message', function (done) {
-    bus.on('success', done);
-    bus.on('error', throwIt);
-    bus.emit('undefined-message');
-  });
-
-  it('should send a null message', function (done) {
-    bus.on('success', done);
-    bus.on('error', throwIt);
-    bus.emit('null-message', null);
-  });
-
-  it('should send a string message', function (done) {
-    bus.on('success', done);
-    bus.on('error', throwIt);
-    bus.emit('string-message', 'a string');
-  });
-
-  it('should send a number message', function (done) {
-    bus.on('success', done);
-    bus.on('error', throwIt);
-    bus.emit('number-message', 123);
-  });
-
-  it('should send an object message', function (done) {
-    bus.on('success', done);
-    bus.on('error', throwIt);
-    bus.emit('object-message', {});
-  });
-
-  it('should recieve errors on "error"', function (done) {
-    bus.on('error', function (err) {
-      done();
-    });
-    bus.emit('throw-error');
-  });
-
-  it('should recieve multiple message', function (done) {
-    var messageCount = 0,
-        i;
-
-    bus.on('pong', function () {
-      messageCount++;
-      if (messageCount === 10) {
-        done();
-      }
+    before(function () {
+      worker = new Worker('base/test/worker.js');
     });
 
-    for (i = 0; i < 10; i++) {
-      bus.emit('ping');
-    }
-  });
+    after(function () {
+      worker.terminate();
+    });
 
-  it('should work with multiple listeners', function (done) {
-    var messageCount = 0;
+    beforeEach(function () {
+      bus = MessageBus.create(worker);
+    });
 
-    var listener = function () {
-      messageCount++;
-      if (messageCount === 3) {
-        done();
-      }
+    afterEach(function () {
+      bus.close();
+    });
+
+    var throwIt = function (err) {
+      throw err;
     };
 
-    bus.on('pong', listener);
-    bus.on('pong', listener);
-    bus.on('pong', listener);
+    it('should send an undefined message', function (done) {
+      bus.on('success', done);
+      bus.on('error', throwIt);
+      bus.emit('undefined-message');
+    });
 
-    bus.emit('ping');
+    it('should send a null message', function (done) {
+      bus.on('success', done);
+      bus.on('error', throwIt);
+      bus.emit('null-message', null);
+    });
+
+    it('should send a string message', function (done) {
+      bus.on('success', done);
+      bus.on('error', throwIt);
+      bus.emit('string-message', 'a string');
+    });
+
+    it('should send a number message', function (done) {
+      bus.on('success', done);
+      bus.on('error', throwIt);
+      bus.emit('number-message', 123);
+    });
+
+    it('should send an object message', function (done) {
+      bus.on('success', done);
+      bus.on('error', throwIt);
+      bus.emit('object-message', {});
+    });
+
+    it('should recieve errors on "error"', function (done) {
+      bus.on('error', function (err) {
+        done();
+      });
+      bus.emit('throw-error');
+    });
+
+    it('should recieve multiple message', function (done) {
+      var messageCount = 0,
+          i;
+
+      bus.on('pong', function () {
+        messageCount++;
+        if (messageCount === 10) {
+          done();
+        }
+      });
+
+      for (i = 0; i < 10; i++) {
+        bus.emit('ping');
+      }
+    });
+
+    it('should work with multiple listeners', function (done) {
+      var messageCount = 0;
+
+      var listener = function () {
+        messageCount++;
+        if (messageCount === 3) {
+          done();
+        }
+      };
+
+      bus.on('pong', listener);
+      bus.on('pong', listener);
+      bus.on('pong', listener);
+
+      bus.emit('ping');
+
+    });
+
+    it('should recieve its own messages', function (done) {
+      bus.on('test', function () {
+        done();
+      });
+      bus.emit('test');
+    });
 
   });
 
-  it('should recieve its own messages', function (done) {
-    bus.on('test', function () {
-      done();
+  describe('with SharedWorker', function () {
+
+    var worker, bus;
+
+    before(function () {
+      worker = new SharedWorker('base/test/shared-worker.js');
+      worker.port.start();
     });
-    bus.emit('test');
+
+    beforeEach(function () {
+      bus = MessageBus.create(worker.port);
+    });
+
+    afterEach(function () {
+      bus.close();
+    });
+
+    var throwIt = function (err) {
+      throw err;
+    };
+
+    it('should send an undefined message', function (done) {
+      bus.on('success', done);
+      bus.on('error', throwIt);
+      bus.emit('undefined-message');
+    });
+
+    it('should send a null message', function (done) {
+      bus.on('success', done);
+      bus.on('error', throwIt);
+      bus.emit('null-message', null);
+    });
+
+    it('should send a string message', function (done) {
+      bus.on('success', done);
+      bus.on('error', throwIt);
+      bus.emit('string-message', 'a string');
+    });
+
+    it('should send a number message', function (done) {
+      bus.on('success', done);
+      bus.on('error', throwIt);
+      bus.emit('number-message', 123);
+    });
+
+    it('should send an object message', function (done) {
+      bus.on('success', done);
+      bus.on('error', throwIt);
+      bus.emit('object-message', {});
+    });
+
+    it.only('should recieve errors on "error"', function (done) {
+      bus.on('error', function (err) {
+        done();
+      });
+      bus.emit('throw-error');
+    });
+
+    it('should recieve multiple message', function (done) {
+      var messageCount = 0,
+          i;
+
+      bus.on('pong', function () {
+        messageCount++;
+        if (messageCount === 10) {
+          done();
+        }
+      });
+
+      for (i = 0; i < 10; i++) {
+        bus.emit('ping');
+      }
+    });
+
+    it('should work with multiple listeners', function (done) {
+      var messageCount = 0;
+
+      var listener = function () {
+        messageCount++;
+        if (messageCount === 3) {
+          done();
+        }
+      };
+
+      bus.on('pong', listener);
+      bus.on('pong', listener);
+      bus.on('pong', listener);
+
+      bus.emit('ping');
+
+    });
+
+    it('should recieve its own messages', function (done) {
+      bus.on('test', function () {
+        done();
+      });
+      bus.emit('test');
+    });
+
   });
 
 });
