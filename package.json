@@ -5,7 +5,7 @@
   "main": "build/MessageBus.js",
   "scripts": {
     "test": "./node_modules/.bin/gulp test",
-    "test": "./node_modules/.bin/gulp build"
+    "postinstall": "./node_modules/.bin/gulp build"
   },
   "typescript": {
     "definition": "build/MessageBus.d.ts"
