@@ -19,7 +19,8 @@ gulp.task('build', function () {
       .pipe(sourcemaps.init())
       .pipe(typescript({
         target: 'ES6',
-        declarationFiles: true
+        declarationFiles: true,
+        noExternalResolve: true
       }));
   return merge(
     tsResult.js
