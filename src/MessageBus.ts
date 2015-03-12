@@ -25,7 +25,7 @@ module MessageBus {
 
       this._endpoint = endpoint;
 
-      var onMessage = (e) => this._onEvent(e.data.name, e.data.payload),
+      let onMessage = (e) => this._onEvent(e.data.name, e.data.payload),
           onError   = (e) => this._onEvent("error", e);
 
       endpoint.addEventListener("message", onMessage);
@@ -71,7 +71,7 @@ module MessageBus {
      */
     off(name: string, listener: Listener): void {
       if (this._channelExists(name)) {
-        var channel = this._channels[name],
+        let channel = this._channels[name],
             index   = channel.indexOf(listener);
         if (index !== -1) {
           channel.splice(index, 1);
@@ -86,7 +86,7 @@ module MessageBus {
      * @param payload Message data
      */
     emit(name: string, payload?: any): void {
-      this._endpoint.postMessage({ name: name, payload: payload });
+      this._endpoint.postMessage({ name, payload });
     }
 
     private _channelExists(name: string): boolean {
