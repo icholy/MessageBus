@@ -25,8 +25,8 @@ module MessageBus {
 
       this._endpoint = endpoint;
 
-      let onMessage = (e) => this._onEvent(e.data.name, e.data.payload),
-          onError   = (e) => this._onEvent("error", e);
+      let onMessage = e => this._onEvent(e.data.name, e.data.payload),
+          onError   = e => this._onEvent("error", e);
 
       endpoint.addEventListener("message", onMessage);
       endpoint.addEventListener("error", onError);
