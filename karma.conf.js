@@ -19,7 +19,8 @@ module.exports = function(config) {
       'test/spec.js',
 
       { pattern: 'test/worker.js', included: false },
-      { pattern: 'test/shared-worker.js', included: false }
+      { pattern: 'test/shared-worker.js', included: false },
+      { pattern: 'build/*.map', included: false }
     ],
 
 

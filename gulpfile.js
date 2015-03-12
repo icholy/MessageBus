@@ -6,6 +6,8 @@ var gulp          = require('gulp'),
     uglify        = require('gulp-uglify'),
     typedoc       = require('gulp-typedoc'),
     tslint        = require('gulp-tslint'),
+    babel         = require('gulp-babel'),
+    sourcemaps    = require('gulp-sourcemaps'),
     typescript    = require('gulp-typescript');
 
 var baseTypeScriptTask = function () {
@@ -14,11 +16,17 @@ var baseTypeScriptTask = function () {
 
 gulp.task('build', function () {
   var tsResult = baseTypeScriptTask()
+      .pipe(sourcemaps.init())
       .pipe(typescript({
+        target: 'ES6',
         declarationFiles: true
       }));
   return merge(
-    tsResult.js.pipe(uglify()).pipe(gulp.dest('build')),
+    tsResult.js
+        .pipe(babel())
+        .pipe(uglify())
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest('build')),
     tsResult.dts.pipe(gulp.dest('build'))
   );
 });
