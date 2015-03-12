@@ -149,13 +149,6 @@ describe('MessageBus', function () {
       bus.emit('object-message', {});
     });
 
-    it('should recieve errors on "error"', function (done) {
-      bus.on('error', function (err) {
-        done();
-      });
-      bus.emit('throw-error');
-    });
-
     it('should recieve multiple message', function (done) {
       var messageCount = 0,
           i;

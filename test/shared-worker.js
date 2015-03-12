@@ -60,10 +60,6 @@ onconnect = function (event) {
     }
   });
 
-  bus.on('throw-error', function () {
-    throw new Error('an error');
-  });
-
   bus.on('ping', function () {
     bus.emit('pong', null);
   });
