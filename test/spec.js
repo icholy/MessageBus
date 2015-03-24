@@ -289,6 +289,11 @@ describe('MessageBus', function () {
       bus.emit('object-message', {});
     });
 
+    it('should work with a number event name', function (done) {
+      bus.on(0, done);
+      bus.emit(0);
+    });
+
     it('should recieve multiple message', function (done) {
       var messageCount = 0,
           i;
