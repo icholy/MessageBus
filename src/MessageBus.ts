@@ -56,11 +56,12 @@ module MessageBus {
      * @param name Channel to listen on
      * @param listener Callback function
      */
-    on(name: string, listener: Listener): void {
-      if (!this._channelExists(name)) {
-        this._channels[name] = [];
+    on(name: string|number, listener: Listener): void {
+      var sname = name.toString();
+      if (!this._channelExists(sname)) {
+        this._channels[sname] = [];
       }
-      this._channels[name].push(listener);
+      this._channels[sname].push(listener);
     }
 
     /**
@@ -69,9 +70,10 @@ module MessageBus {
      * @param name Channel to unlisten
      * @param listener Callback function
      */
-    off(name: string, listener: Listener): void {
-      if (this._channelExists(name)) {
-        let channel = this._channels[name],
+    off(name: string|number, listener: Listener): void {
+      var sname = name.toString();
+      if (this._channelExists(sname)) {
+        let channel = this._channels[sname],
             index   = channel.indexOf(listener);
         if (index !== -1) {
           channel.splice(index, 1);
