@@ -87,8 +87,12 @@ module MessageBus {
      * @param name Channel name
      * @param payload Message data
      */
-    emit(name: string, payload?: any): void {
-      this._endpoint.postMessage({ name, payload });
+    emit(name: string|number, payload?: any): void {
+      var sname = name.toString();
+      this._endpoint.postMessage({
+        name:    sname,
+        payload: payload
+      });
     }
 
     private _channelExists(name: string): boolean {
