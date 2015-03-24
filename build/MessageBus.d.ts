@@ -28,14 +28,14 @@ declare module MessageBus {
          * @param name Channel to listen on
          * @param listener Callback function
          */
-        on(name: string, listener: Listener): void;
+        on(name: string | number, listener: Listener): void;
         /**
          * Unlisten from channel
          *
          * @param name Channel to unlisten
          * @param listener Callback function
          */
-        off(name: string, listener: Listener): void;
+        off(name: string | number, listener: Listener): void;
         /**
          * Emit a message on a channel
          *
