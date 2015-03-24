@@ -42,7 +42,7 @@ declare module MessageBus {
          * @param name Channel name
          * @param payload Message data
          */
-        emit(name: string, payload?: any): void;
+        emit(name: string | number, payload?: any): void;
         private _channelExists(name);
         private _onEvent(name, payload);
     }
