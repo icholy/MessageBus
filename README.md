@@ -38,25 +38,31 @@ bus.on('ping', function () {
 
 ### SharedWorker Example
 
-**main.js**
+**events.ts**
 
-``` js
+``` ts
+enum Events { PONG, PING }
+```
+
+**main.ts**
+
+``` ts
 var worker = new SharedWorker('worker.js'),
     bus    = MessageBus.create(worker.port);
 
 worker.port.start();
 
-bus.on('pong', function (payload) {
+bus.on(Events.PONG, function (payload) {
   console.log(payload.foo);
 });
 
-bus.emit('ping');
+bus.emit(Events.PING);
 ```
 
-**worker.js**
+**worker.ts**
 
-``` js
-importScripts('MessageBus.js');
+``` ts
+importScripts('MessageBus.js', 'events.js');
 
 onconnect = function (event) {
   var port = events.port[0],
@@ -64,12 +70,8 @@ onconnect = function (event) {
 
   port.start();
 
-  self.addEventListener("error", function (e) {
-    bus.emit("error", e);
-  });
-
-  bus.on('ping', function () {
-    bus.emit('pong', { foo: 'Hello World' });
+  bus.on(Events.PING, function () {
+    bus.emit(Events.PONG, { foo: 'Hello World' });
   });
 };
 ```
