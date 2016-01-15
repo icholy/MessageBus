@@ -101,9 +101,11 @@ module MessageBus {
 
     private _onEvent(name: string, payload: any): void {
       if (this._channelExists(name)) {
-        this._channels[name].forEach((listener) => {
-          listener(payload);
-        });
+        let listeners = this._channels[name];
+        let length = listeners.length;
+        for (let i = 0; i < length; i++) {
+          listeners[i](payload);
+        }
       }
     }
 
