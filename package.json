@@ -1,6 +1,6 @@
 {
   "name": "MessageBus",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Message Bus for WebWorkers",
   "main": "build/MessageBus.js",
   "scripts": {
