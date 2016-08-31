@@ -1,6 +1,6 @@
 declare module MessageBus {
     interface Endpoint {
-        postMessage(message: any): void;
+        postMessage(message: any, targetOrigin?: string, ports?: any): void;
         addEventListener(type: string, listener: (ev: any) => any): any;
         removeEventListener(type: string, listener: (ev: any) => any): any;
     }
