@@ -4,8 +4,8 @@ declare module MessageBus {
         addEventListener(type: string, listener: (ev: any) => any): any;
         removeEventListener(type: string, listener: (ev: any) => any): any;
     }
-    interface Listener {
-        (payload?: any): any;
+    interface Listener<T> {
+        (payload?: T): any;
     }
     class MessageBus {
         private _channels;
@@ -28,14 +28,14 @@ declare module MessageBus {
          * @param name Channel to listen on
          * @param listener Callback function
          */
-        on(name: string | number, listener: Listener): void;
+        on<T>(name: string | number, listener: Listener<T>): void;
         /**
          * Unlisten from channel
          *
          * @param name Channel to unlisten
          * @param listener Callback function
          */
-        off(name: string | number, listener: Listener): void;
+        off(name: string | number, listener: Listener<any>): void;
         /**
          * Emit a message on a channel
          *

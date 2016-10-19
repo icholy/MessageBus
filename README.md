@@ -17,7 +17,7 @@ $ gulp dist
 let worker = new Worker("worker.js"),
     bus    = MessageBus.create(worker);
 
-bus.on("pong", (payload) => {
+bus.on<any>("pong", payload => {
   console.log(payload.foo);
 });
 
@@ -52,7 +52,7 @@ let worker = new SharedWorker("worker.js"),
 
 worker.port.start();
 
-bus.on(Events.PONG, (payload) => {
+bus.on<any>(Events.PONG, payload => {
   console.log(payload.foo);
 });
 
@@ -64,7 +64,7 @@ bus.emit(Events.PING);
 ``` ts
 importScripts("MessageBus.js", "events.js");
 
-onconnect = (event) => {
+onconnect = event => {
   let port = events.port[0],
       bus  = MessageBus.create(port);
 
