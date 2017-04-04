@@ -6,9 +6,7 @@
   "scripts": {
     "test": "./node_modules/.bin/gulp test"
   },
-  "typescript": {
-    "definition": "build/MessageBus.d.ts"
-  },
+  "types": "build/MessageBus.d.ts",
   "author": "ilia.choly@gmail.com",
   "license": "MIT",
   "devDependencies": {
