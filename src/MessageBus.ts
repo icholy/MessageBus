@@ -1,4 +1,4 @@
-module MessageBus {
+namespace MessageBus {
 
   export interface Endpoint {
     postMessage(message: any, ...params: any[]): void;
